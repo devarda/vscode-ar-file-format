@@ -8,11 +8,12 @@ export function activate(context: vscode.ExtensionContext) {
         document.languageId === 'arrayfile' &&
         document.uri.scheme === 'file'
       ) {
-        const edit = new vscode.WorkspaceEdit();
         const fullRange = new vscode.Range(0, 0, document.lineCount, 0);
         const wrappedText = `const array = [\n${document.getText()}\n];`;
-        edit.replace(document.uri, fullRange, wrappedText);
-        vscode.workspace.applyEdit(edit);
+        const edit = vscode.TextEdit.replace(fullRange, wrappedText);
+        const workspaceEdit = new vscode.WorkspaceEdit();
+        workspaceEdit.set(document.uri, [edit]); // Set the edits
+        vscode.workspace.applyEdit(workspaceEdit); // Apply the workspace edit
       }
     })
   );
@@ -26,16 +27,15 @@ export function activate(context: vscode.ExtensionContext) {
         document.uri.scheme === 'file'
       ) {
         event.waitUntil(
-          new Promise((resolve) => {
-            const edit = new vscode.WorkspaceEdit();
+          new Promise<vscode.TextEdit[]>((resolve) => {
             const text = document.getText();
             const unwrappedText = text.replace(
               /^const array = \[\n([\s\S]*?)\n\];$/,
               '$1'
             );
             const fullRange = new vscode.Range(0, 0, document.lineCount, 0);
-            edit.replace(document.uri, fullRange, unwrappedText);
-            resolve(edit);
+            const edit = vscode.TextEdit.replace(fullRange, unwrappedText);
+            resolve([edit]); // Resolve with an array of TextEdit objects
           })
         );
       }
