@@ -111,18 +111,18 @@
           "end": "`",
           "patterns": [
             {
+              "name": "constant.character.escape.array-file",
+              "match": "\\\\[`]"
+            },
+            {
               "name": "string.interpolated.array-file",
               "begin": "\\${",
               "end": "}",
               "patterns": [
                 {
-                  "include": "#"
+                  "include": "source.js"
                 }
               ]
-            },
-            {
-              "name": "constant.character.escape.array-file",
-              "match": "\\\\[`]"
             }
           ]
         }
