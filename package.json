@@ -1,0 +1,54 @@
+{
+  "name": "ar-file-format-support",
+  "displayName": "AR File Format Support",
+  "description": "Array Files Simple But Powerfull",
+  "author": {
+    "name": "Arda",
+    "email": "50584220+devarda@users.noreply.github.com"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "@types/vscode": "^1.62.0",
+    "typescript": "^4.3.5"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "array-file",
+        "aliases": [
+          "Array File",
+          "array-file"
+        ],
+        "extensions": [
+          ".ar",
+          ".array"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "array-file",
+        "scopeName": "source.arrayfile",
+        "path": "./syntaxes/array-file.tmLanguage.json"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onLanguage:arrayfile"
+  ],
+  "main": "./out/extension.js"
+}

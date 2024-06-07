@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Array File",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#arrays"
+    },
+    {
+      "include": "#objects"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.array-file",
+          "match": "\\b(if|while|for|return)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.array-file",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.array-file",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.array-file",
+      "match": "\\b\\d+\\.?\\d*\\b"
+    },
+    "arrays": {
+      "begin": "\\[",
+      "end": "\\]",
+      "name": "meta.array.array-file",
+      "patterns": [
+        {
+          "include": "#"
+        }
+      ]
+    },
+    "objects": {
+      "begin": "\\{",
+      "end": "\\}",
+      "name": "meta.object.array-file",
+      "patterns": [
+        {
+          "include": "#"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.arrayfile"
+}
