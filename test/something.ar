@@ -8,8 +8,8 @@
 // Strings
 "Hello, world!",
 'Single quotes are cool too',
-// `Template literals allow expressions like ${42 / 7}`,
-// "Escaped characters \" are important",
+`Template literals allow e\`xpressions like ${42 / 7}`,
+"Escaped characters \" are important",
 
 // Nested Arrays
 [1, 2, 3, ["nested", ["more nested", [123]]]],

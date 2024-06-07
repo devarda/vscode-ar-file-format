@@ -86,12 +86,24 @@
         {
           "name": "string.quoted.double.array-file",
           "begin": "\"",
-          "end": "\""
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.array-file",
+              "match": "\\\\[\"\\\\]"
+            }
+          ]
         },
         {
           "name": "string.quoted.single.array-file",
           "begin": "'",
-          "end": "'"
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.array-file",
+              "match": "\\\\[']"
+            }
+          ]
         },
         {
           "name": "string.quoted.backtick.array-file",
@@ -107,6 +119,10 @@
                   "include": "#"
                 }
               ]
+            },
+            {
+              "name": "constant.character.escape.array-file",
+              "match": "\\\\[`]"
             }
           ]
         }
