@@ -3,22 +3,174 @@
   "name": "Array File",
   "patterns": [
     {
-      "include": "#keywords"
+      "include": "#comments"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#constructor"
     },
     {
       "include": "#strings"
     },
     {
+      "include": "#regexp"
+    },
+    {
       "include": "#numbers"
     },
     {
-      "include": "#arrays"
+      "include": "#constants"
+    },
+    {
+      "include": "#keywords"
     },
     {
       "include": "#objects"
+    },
+    {
+      "include": "#arrays"
     }
   ],
   "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.array-file",
+          "begin": "//",
+          "end": "$",
+          "match": "//.*"
+        },
+        {
+          "name": "comment.block.array-file",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "patterns": [
+            {
+              "match": ".+?",
+              "name": "comment.block.content.array-file"
+            }
+          ]
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "storage.type.function.array-file",
+          "begin": "\\bfunction\\b(?=\\s*\\((?:[^)(]*|\\([^)(]*\\))*\\))",
+          "end": "{",
+          "excludeEnd": true
+        },
+        {
+          "name": "storage.type.function.arrow.array-file",
+          "match": "=>"
+        }
+      ]
+    },
+    "constructor": {
+      "patterns": [
+        {
+          "name": "keyword.other.new.array-file",
+          "match": "\\bnew\\b"
+        },
+        {
+          "name": "support.class.array-file",
+          "match": "\\b(Date|Set|Map|Error|BigInt)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.array-file",
+          "begin": "\"",
+          "end": "\""
+        },
+        {
+          "name": "string.quoted.single.array-file",
+          "begin": "'",
+          "end": "'"
+        },
+        {
+          "name": "string.quoted.backtick.array-file",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "name": "string.interpolated.array-file",
+              "begin": "\\${",
+              "end": "}",
+              "patterns": [
+                {
+                  "include": "#"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "regexp": {
+      "name": "string.regexp.array-file",
+      "begin": "/",
+      "end": "/[gimuys]*",
+      "patterns": [
+        {
+          "name": "constant.character.escape.regexp.array-file",
+          "match": "\\\\[\\/bB]"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.integer.binary.array-file",
+          "match": "\\b0b[01]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.octal.array-file",
+          "match": "\\b0o[0-7]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.hexadecimal.array-file",
+          "match": "\\b0x[0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.bigint.array-file",
+          "match": "\\b\\d+n\\b"
+        },
+        {
+          "name": "constant.numeric.integer.decimal.array-file",
+          "match": "\\b\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.float.array-file",
+          "match": "\\b\\d+\\.\\d*\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.true.array-file",
+          "match": "\\btrue\\b"
+        },
+        {
+          "name": "constant.language.boolean.false.array-file",
+          "match": "\\bfalse\\b"
+        },
+        {
+          "name": "constant.language.null.array-file",
+          "match": "\\bnull\\b"
+        },
+        {
+          "name": "constant.language.undefined.array-file",
+          "match": "\\bundefined\\b"
+        }
+      ]
+    },
     "keywords": {
       "patterns": [
         {
@@ -26,21 +178,6 @@
           "match": "\\b(if|while|for|return)\\b"
         }
       ]
-    },
-    "strings": {
-      "name": "string.quoted.double.array-file",
-      "begin": "\"",
-      "end": "\"",
-      "patterns": [
-        {
-          "name": "constant.character.escape.array-file",
-          "match": "\\\\."
-        }
-      ]
-    },
-    "numbers": {
-      "name": "constant.numeric.array-file",
-      "match": "\\b\\d+\\.?\\d*\\b"
     },
     "arrays": {
       "begin": "\\[",

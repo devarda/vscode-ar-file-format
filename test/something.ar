@@ -1,0 +1,57 @@
+// Numbers
+42,
+3.14159, 
+0b101001, // Binary
+0o52,     // Octal
+0x2A,     // Hexadecimal
+
+// Strings
+"Hello, world!",
+'Single quotes are cool too',
+// `Template literals allow expressions like ${42 / 7}`,
+// "Escaped characters \" are important",
+
+// Nested Arrays
+[1, 2, 3, ["nested", ["more nested", [123]]]],
+
+// Objects
+{
+name: "Object",
+properties: {
+    nested: {
+    array: [1, 2, 3],
+    boolean: true,
+    nullValue: null
+    }
+},
+"strange-key": "It's okay in JavaScript"
+},
+
+// Functions
+function() {
+console.log("I'm a function inside an array!");
+},
+() => console.log("Arrow functions work too"),
+
+// Booleans
+true,
+false,
+
+// Null and undefined
+null,
+undefined,
+
+// More complex data structures
+new Map([["key1", "value1"], ["key2", "value2"]]),
+new Set([1, 2, 3, 2, 1]),
+
+// Date and Error
+new Date(),
+new Error("Something went wrong"),
+
+// Regular expression
+/abc/,
+
+// BigInt
+BigInt(9007199254740991)
+
