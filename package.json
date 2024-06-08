@@ -24,6 +24,17 @@
     "typescript": "^4.3.5"
   },
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Array File",
+      "properties": {
+        "arrayFile.formatOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable formatting on save."
+        }
+      }
+    },
     "languages": [
       {
         "id": "array-file",

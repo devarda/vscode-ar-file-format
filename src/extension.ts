@@ -1,41 +1,32 @@
 import * as vscode from 'vscode';
-import * as prettier from 'prettier';
-
-/**
- * Formats arrays within the given text.
- *
- * @param text - The text to format.
- * @returns The formatted text.
- */
-async function formatCode(text: string): Promise<string> {
-  try {
-    const wrappedArray = `const array = [\n${text}\n];`;
-    const formattedWrappedArray = await prettier.format(wrappedArray, {
-      parser: 'babel',
-    });
-
-    // Remove the wrapping 'const array = [' and '];'
-    const formattedArray = formattedWrappedArray
-      .replace(/^const array = \[\s*/, '')
-      .replace(/\s*];\s*$/, '');
-
-    const lines = formattedArray.split('\n');
-    const minIndent = Math.min(
-      ...lines.filter((line) => line.trim()).map((line) => line.search(/\S|$/))
-    );
-
-    const unindentedArray = lines
-      .map((line) => line.slice(minIndent))
-      .join('\n');
-
-    return unindentedArray;
-  } catch (error) {
-    console.error('Formatting error:', error);
-    return text;
-  }
-}
+import formatCode from './formatCode';
 
 export function activate(context: vscode.ExtensionContext) {
+  // on will save
+  context.subscriptions.push(
+    vscode.workspace.onWillSaveTextDocument(async (e) => {
+      const config = vscode.workspace.getConfiguration('myExtension');
+      const formatOnSave = config.get<boolean>('formatOnSave');
+
+      if (formatOnSave) {
+        const document = e.document;
+        if (document.languageId === 'array-file') {
+          const text = document.getText();
+          const formattedText = await formatCode(text);
+          const fullRange = new vscode.Range(
+            document.positionAt(0),
+            document.positionAt(text.length)
+          );
+
+          const edit = new vscode.WorkspaceEdit();
+          edit.replace(document.uri, fullRange, formattedText);
+          await vscode.workspace.applyEdit(edit);
+          await document.save();
+        }
+      }
+    })
+  );
+
   // formatter
   context.subscriptions.push(
     vscode.languages.registerDocumentFormattingEditProvider('array-file', {
