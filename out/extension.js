@@ -31,48 +31,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
-const prettier = __importStar(require("prettier"));
-/**
- * Formats arrays within the given text.
- *
- * @param text - The text to format.
- * @returns The formatted text.
- */
-function formatCode(text) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const wrappedArray = `const array = [\n${text}\n];`;
-            const formattedWrappedArray = yield prettier.format(wrappedArray, {
-                parser: 'babel',
-            });
-            // Remove the wrapping 'const array = [' and '];'
-            const formattedArray = formattedWrappedArray
-                .replace(/^const array = \[\s*/, '')
-                .replace(/\s*];\s*$/, '');
-            const lines = formattedArray.split('\n');
-            const minIndent = Math.min(...lines.filter((line) => line.trim()).map((line) => line.search(/\S|$/)));
-            const unindentedArray = lines
-                .map((line) => line.slice(minIndent))
-                .join('\n');
-            return unindentedArray;
-        }
-        catch (error) {
-            console.error('Formatting error:', error);
-            return text;
-        }
-    });
-}
+const formatCode_1 = __importDefault(require("./formatCode"));
 function activate(context) {
+    // on will save
+    context.subscriptions.push(vscode.workspace.onWillSaveTextDocument((e) => __awaiter(this, void 0, void 0, function* () {
+        const config = vscode.workspace.getConfiguration('myExtension');
+        const formatOnSave = config.get('formatOnSave');
+        if (formatOnSave) {
+            const document = e.document;
+            if (document.languageId === 'array-file') {
+                const text = document.getText();
+                const formattedText = yield (0, formatCode_1.default)(text);
+                const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+                const edit = new vscode.WorkspaceEdit();
+                edit.replace(document.uri, fullRange, formattedText);
+                yield vscode.workspace.applyEdit(edit);
+                yield document.save();
+            }
+        }
+    })));
     // formatter
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('array-file', {
         provideDocumentFormattingEdits(document) {
             return __awaiter(this, void 0, void 0, function* () {
                 const edits = [];
                 const text = document.getText();
-                const formattedText = yield formatCode(text);
+                const formattedText = yield (0, formatCode_1.default)(text);
                 const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
                 edits.push(vscode.TextEdit.replace(fullRange, formattedText));
                 return edits;

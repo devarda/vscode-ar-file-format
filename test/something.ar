@@ -11,7 +11,7 @@
   `Template literals allow e\`xpressions like ${42 / 7}`,
   `asdf 34 ${asdf}`,
   `Multiline strings
-        are easy in JavaScript`,
+                              are easy in JavaScript`,
   `Escaped characters \" are important`,
   'Escaped characters " are important',
 
