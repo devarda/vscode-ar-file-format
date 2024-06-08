@@ -6,6 +6,7 @@
     "name": "Arda",
     "email": "50584220+devarda@users.noreply.github.com"
   },
+  "publisher": "Arda",
   "version": "1.0.0",
   "engines": {
     "vscode": "^1.89.1"
