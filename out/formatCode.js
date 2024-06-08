@@ -34,37 +34,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const prettier = __importStar(require("prettier"));
 /**
- * Formats arrays within the given text.
+ * Formats the given text by wrapping it within an array declaration, reformatting,
+ * and then unwrapping while removing one level of indentation.
  *
  * @param text - The text to format.
- * @returns The formatted text.
+ * @returns The formatted text with reduced indentation.
  */
 function formatCode(text) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Wrap the input text as an array
             const wrappedArray = `const array = [\n${text}\n];`;
             const formattedWrappedArray = yield prettier.format(wrappedArray, {
                 parser: 'babel',
+                singleQuote: true,
+                trailingComma: 'all',
             });
-            // Remove the wrapping 'const array = [' and '];'
-            const formattedArray = formattedWrappedArray
-                .replace(/^const array = \[\s*/, '')
-                .replace(/\s*];\s*$/, '');
+            // Remove the wrapping 'const array = [' at the start
+            let formattedArray = formattedWrappedArray.replace(/^const array = \[\n/, '');
+            // Remove the wrapping '];' at the end including any trailing whitespace or newlines
+            formattedArray = formattedArray.replace(/\n\s*];\s*$/, '');
+            // Split formatted text into lines
             const lines = formattedArray.split('\n');
-            const minIndent = Math.min(...lines
-                .filter((line) => line.trim())
+            // Reduce indentation by one level for each line
+            const reducedIndentationArray = lines
                 .map((line) => {
-                const match = line.match(/^\s+/);
-                return match ? match[0].length : 0;
-            }));
-            const unindentedArray = lines
-                .map((line) => (line.startsWith(' ') ? line.slice(minIndent) : line))
+                // If the line is not empty, reduce its indentation
+                return line.replace(/^ {2}/, ''); // Assumes a 2-space indentation level
+            })
                 .join('\n');
-            return unindentedArray;
+            return reducedIndentationArray + '\n'; // Add a newline at the end
         }
         catch (error) {
             console.error('Formatting error:', error);
-            return text;
+            return text; // Return original text on error
         }
     });
 }
